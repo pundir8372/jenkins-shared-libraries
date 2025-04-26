@@ -25,12 +25,12 @@ def call(Map config = [:]) {
         
         // Update deployment manifests with new image tags - using proper Linux sed syntax
         sh """
-            # Update main application deployment - note the correct image name is trainwithshubham/easyshop-app
-            sed -i "s|image: trainwithshubham/easyshop-app:.*|image: trainwithshubham/easyshop-app:${imageTag}|g" ${manifestsPath}/08-easyshop-deployment.yaml
+            # Update main application deployment - note the correct image name is pundirsahil/e-commerce-web
+            sed -i "s|image: pundirsahil/e-commerce-web:.*|image: pundirsahil/e-commerce-web:${imageTag}|g" ${manifestsPath}/08-easyshop-deployment.yaml
             
             # Update migration job if it exists
             if [ -f "${manifestsPath}/12-migration-job.yaml" ]; then
-                sed -i "s|image: trainwithshubham/easyshop-migration:.*|image: trainwithshubham/easyshop-migration:${imageTag}|g" ${manifestsPath}/12-migration-job.yaml
+                sed -i "s|image: pundirsahil/e-commerce-web-migration:.*|image: pundirsahil/e-commerce-web-migration:${imageTag}|g" ${manifestsPath}/12-migration-job.yaml
             fi
             
             # Ensure ingress is using the correct domain
@@ -47,7 +47,7 @@ def call(Map config = [:]) {
                 git commit -m "Update image tags to ${imageTag} and ensure correct domain [ci skip]"
                 
                 # Set up credentials for push
-                git remote set-url origin https://\${GIT_USERNAME}:\${GIT_PASSWORD}@github.com/LondheShubham153/tws-e-commerce-app.git
+                git remote set-url origin https://\${GIT_USERNAME}:\${GIT_PASSWORD}@github.com:pundir8372/tws-e-commerce-app.git
                 git push origin HEAD:\${GIT_BRANCH}
             fi
         """
